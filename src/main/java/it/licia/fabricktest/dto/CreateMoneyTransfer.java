@@ -1,5 +1,6 @@
 package it.licia.fabricktest.dto;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class CreateMoneyTransfer {
@@ -145,6 +146,15 @@ public class CreateMoneyTransfer {
 	public void setHasTaxRelief(boolean hasTaxRelief) {
 		this.hasTaxRelief = hasTaxRelief;
 	}
-	
+	@Override
+	public String toString() {
+		return "CreateMoneyTransfer [moneyTransferId=" + moneyTransferId + ", status=" + status + ", direction="
+				+ direction + ", creditor=" + creditor + ", debtor=" + debtor + ", cro=" + cro + ", trn=" + trn
+				+ ", uri=" + uri + ", description=" + description + ", createdDatetime=" + createdDatetime
+				+ ", accountedDatetime=" + accountedDatetime + ", debtorValueDate=" + debtorValueDate
+				+ ", creditorValueDate=" + creditorValueDate + ", amount=" + amount + ", isUrgent=" + isUrgent
+				+ ", isInstant=" + isInstant + ", feeType=" + feeType + ", feeAccountID=" + feeAccountID + ", fees="
+				+ Arrays.toString(fees) + ", hasTaxRelief=" + hasTaxRelief + "]";
+	}
 	
 }

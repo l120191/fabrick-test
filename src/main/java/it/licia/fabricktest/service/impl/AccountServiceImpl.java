@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import it.licia.fabricktest.dto.BalanceResponse;
+import it.licia.fabricktest.dto.CreateMoneyTransfer;
 import it.licia.fabricktest.dto.CreateMoneyTransferRequest;
 import it.licia.fabricktest.dto.CreateMoneyTransferResponse;
 import it.licia.fabricktest.dto.Transaction;
@@ -89,34 +90,35 @@ public class AccountServiceImpl implements IAccountService{
 		return result;
 	}
 	
-	
 	@Override
-	public String createMoneyTansfer(Long accountId, CreateMoneyTransferRequest request) {
+	public CreateMoneyTransfer createMoneyTansfer(Long accountId, CreateMoneyTransferRequest request) {
+		
 		String url = BASE_URI+ "/api/gbs/banking/v4.0/accounts/{accountId}/payments/money-transfers";
-		ResponseEntity<String> response = null;
-		CreateMoneyTransferResponse res = null;
-		String responseMoneyTransfer = null;
+		ResponseEntity<CreateMoneyTransferResponse> response = null;
+		CreateMoneyTransfer result = null;
 		url = url.replace("{accountId}", Long.toString(accountId));
 		
 		log.info("[createMoneyTansfer] START ****************** Input >"+accountId+"<");
 		log.info("[createMoneyTansfer] URL >"+url+"<");
 		try {
 			HttpEntity<CreateMoneyTransferRequest> httpEntity = new HttpEntity<>(request, getHeaderWithAuth());
-			responseMoneyTransfer = restTemplate.postForObject(url, httpEntity, String.class);
-			log.info("[createMoneyTansfer] response >"+(responseMoneyTransfer!=null?responseMoneyTransfer.toString():responseMoneyTransfer)+"<");
+			response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, CreateMoneyTransferResponse.class);
+//			response = restTemplate.postForObject(url, httpEntity, CreateMoneyTransferResponse.class);
+			log.info("[createMoneyTansfer] response >"+(response!=null?response.toString():response)+"<");
 			if(response!=null && HttpStatus.OK.equals(response.getStatusCode()) && response.getBody()!=null ){
-//				if(response.getBody().getPayload()!=null && response.getBody().getPayload().getList()!=null) {
-//					result = response.getBody().getPayload().getList();
-//				} 
+				if(response.getBody().getPayload()!=null && response.getBody().getPayload()!=null) {
+					result = response.getBody().getPayload();
+				} 
 			} 
 		
 		} catch(Exception e) {
 			log.error("[retrieveTransactionByAccount] error call to service  >"+e);
 		}
 		
-		log.info("[createMoneyTansfer] response >"+responseMoneyTransfer+"<");
-		return responseMoneyTransfer;
+		log.info("[createMoneyTansfer] response >"+result+"<");
+		return result;
 	}
+	
 	
 	private HttpHeaders getHeaderWithAuth() {
 		HttpHeaders headers = new HttpHeaders();
@@ -126,5 +128,6 @@ public class AccountServiceImpl implements IAccountService{
 		headers.add("Api-Key", "FXOVVXXHVCPVPBZXIJOBGUGSKHDNFRRQJP");
 		return headers;
 	}
+
 
 }

@@ -47,71 +47,22 @@ public class AccountController {
 		log.info("[accountTransactionsList] END   ****************** Output >"+(responseTransactions!=null?Arrays.toString(responseTransactions):null)+"<");
 		return (responseTransactions!=null?Arrays.toString(responseTransactions):null); 
 	}
-	
-//	
-//	// http://localhost:8080/account/bonifico/14537780
-//	@GetMapping("/bonifico/{accountId}")
-//	public Long accountBonifico(@PathVariable Long accountId) {
-//		log.info("[accountBalance] START ****************** Input >"+accountId+"<");
-//
-//		CreateMoneyTransferRequest request = new CreateMoneyTransferRequest();
-//		Creditor creditor = new Creditor();
-//		creditor.setName("Licia Belli");
-//		Account account = new Account();
-//		account.setAccountCode("IT04J0200801622000105250298");
-//		account.setBicCode("UNCRITM1222");
-//		creditor.setAccount(account);
-//		request.setCreditor(creditor);
-//		request.setDescription("Test fabrick");
-//		request.setCurrency("EUR");
-//		String dateS = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-//		request.setExecutionDate("2023-10-11");
-//		request.setAmount(10.00);
-//		
-//		accountService.createMoneyTansfer(accountId, request);
-//		
-//		return accountId; 
-//		
-//	}
+
 	
 	// http://localhost:8080/account/bonifico/14537780
 	@PostMapping("/bonifico/{accountId}")
-	public Long accountBonifico(@PathVariable Long accountId, @RequestBody CreateMoneyTransferRequest request) {
+	public String accountBonifico(@PathVariable Long accountId, @RequestBody CreateMoneyTransferRequest request) {
 		log.info("[accountBalance] START ****************** Input >"+accountId+"<");
 		log.info("[accountBalance] START ****************** Input >"+request.toString()+"<");
 		Gson gson = new Gson();
-		String resJson = gson.toJson(CreateMoneyTransferRequest.class);
-
-		log.info("[accountBalance] START ****************** JSON  >"+resJson+"<");
-		String responseBonifico = accountService.createMoneyTansfer(accountId, request);
+		String requestJson = gson.toJson(request);
+		log.info("[accountBalance] START ****************** JSON Request >"+requestJson+"<");
+		CreateMoneyTransfer responseBonifico = accountService.createMoneyTansfer(accountId, request);
 		
 		log.info("[accountBalance] START ****************** output >"+responseBonifico+"<");
 
-		return accountId; 
+		return responseBonifico!=null?responseBonifico.toString():"Error"; 
 		
 	}
-//	{
-//		  "creditor": {
-//		    "name": "John Doe",
-//		    "account": {
-//		      "accountCode": "IT04J0200801622000105250298",
-//		      "bicCode": "UNCRITM1222"
-//		    }
-//		  },
-//		  "executionDate": "2023-11-11",
-//		  "description": "Test fabrick",
-//		  "amount": 10,
-//		  "currency": "EUR",
-//		  "isUrgent": false,
-//		  "isInstant": false
-//		}
-	
-	
-// [creditor=Creditor [name=John Doe, 
-//	account=Account [accountCode=IT04J0200801622000105250298, bicCode=UNCRITM1222], 
-//		address=null], executionDate=2023-11-11, uri=null, 
-	description=Test fabrick, amount=10.0, currency=EUR, isUrgent=false, isInstant=false, feeType=null, feeAccountId=null, taxRelief=null, legalPersonBeneficiary=null]<
 
-	
-	
 }

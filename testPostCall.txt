@@ -1,0 +1,41 @@
+Endpoint > https://sandbox.platfr.io/api/gbs/banking/v4.0/accounts/14537780/payments/money-transfers
+
+
+TODO
+- Finire il metodo di test in FabrcikTestApplicationTests
+- Gestione eccezioni > Se va in errore Rilancio eccezione, se ho status code !=200 gestisco e restituisco response con errore
+- Finire chiamata POST di servizio esposto 
+- Gitignore
+
+ Test 08/10/2023
+--- Request (anche con data 2023-10-15 e )
+{
+  "creditor": {
+    "name": "Licia Belli",
+    "account": {
+      "accountCode": "IT23A0336844430152923804660",
+      "bicCode": "SELBIT2BXXX"
+    }
+  },
+  "executionDate": "2019-04-01",
+  "description": "Payment invoice 75/2017",
+  "amount": 8,
+  "currency": "EUR",
+  "isUrgent": false,
+  "isInstant": false
+  }
+}
+
+--- Result
+
+{
+    "status": "KO",
+    "errors": [
+        {
+            "code": "GTW900",
+            "description": "Generic Error",
+            "params": ""
+        }
+    ],
+    "payload": {}
+}
